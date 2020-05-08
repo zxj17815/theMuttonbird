@@ -7,7 +7,7 @@ import datetime
 from django.http import HttpResponse
 from django.contrib.auth.models import Permission
 from django.views import generic as django_generic  # Django Form视图
-# from rest_framework import permissions  # 权限
+from rest_framework import permissions  # 权限
 from django.contrib.auth.models import Group, Permission
 from rest_framework import generics, views, viewsets, mixins  # RestFul API视图
 from rest_framework.decorators import action
@@ -29,7 +29,7 @@ class UserViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.RetrieveM
     """
     基本用户表
     """
-    # permission_classes = [permission.WeChatWorkPermission]
+    permission_classes = [permissions.DjangoModelPermissions]
     # permission_classes = [ReadOnly]
     # authentication_classes = [auth.WeChatWorkAuthentication]
     pagination_class = P20
@@ -48,7 +48,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    # permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [permissions.DjangoModelPermissions]
     queryset = Group.objects.all()
     serializer_class = serializers.GroupSerializer
 
@@ -56,7 +56,7 @@ class PermissionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows permission to be viewed or edited.
     """
-    # permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser]
     queryset = Permission.objects.all()
     serializer_class = serializers.PermissionSerializer
     filterset_fields = '__all__' 

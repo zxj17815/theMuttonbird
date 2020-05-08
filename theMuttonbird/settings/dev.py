@@ -28,3 +28,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload') # 注意此处不要写成列表或元组的形式
+MEDIA_URL = '/media/' # 配置 MEDIA_URL 作为公用 URL，指向上传文件的基本路径
