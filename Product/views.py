@@ -52,7 +52,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     destroy:
         删除资源
     '''
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     filterset_fields = '__all__' 
@@ -76,7 +76,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     destroy:
         删除资源
     '''
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Product.objects.filter(is_history=False).all()
     serializer_class = serializers.ProductSerializer
     # filterset_fields = '__all__' 
@@ -89,7 +89,7 @@ class ProductSpecViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,mixins.R
     retrieve:
         获取单个信息  
     '''
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.ProductSpec.objects.all()
     serializer_class = serializers.ProductSpecSerializer
     filterset_fields = '__all__' 
@@ -111,7 +111,7 @@ class SpecViewSet(viewsets.ModelViewSet):
     destroy:
         删除资源
     '''
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Spec.objects.all()
     serializer_class = serializers.SpecSerializer
     filterset_fields = '__all__' 
@@ -121,7 +121,7 @@ class SpecInfoViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     list:
         获取属性值列表 
     '''
-    permission_classes = [permissions.DjangoModelPermissions]
+    # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.SpecInfo.objects.all()
     serializer_class = serializers.SpecInfoSerializer
     filterset_fields = '__all__' 

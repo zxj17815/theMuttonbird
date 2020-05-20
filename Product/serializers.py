@@ -19,13 +19,14 @@ class SpecInfoSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = models.SpecInfo
-        fields = ['id','name']
+        fields = ['id', 'name']
         depth = 1
 
 class SpecSerializer(WritableNestedModelSerializer):
     """属性 序列化类
     """
-    spec_info=SpecInfoSerializer(many=True,help_text="[spec_info]数组")
+    spec_info = SpecInfoSerializer(many=True, help_text="[spec_info]数组")
+
     class Meta:
         model = models.Spec
         fields = '__all__'
@@ -44,18 +45,31 @@ class ProductSpecSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     """类别 序列化类
     """
-    father=serializers.PrimaryKeyRelatedField(many=False,read_only=False,queryset=models.Category.objects.all(),help_text='int,父类')
+    father = serializers.PrimaryKeyRelatedField(
+        many=False, read_only=False, queryset=models.Category.objects.all(), required=False, help_text='int,父类')
+    spec = serializers.PrimaryKeyRelatedField(
+        many=True, read_only=False, queryset=models.Spec.objects.all(), help_text='int,属性')
+
     class Meta:
         model = models.Category
         fields = '__all__'
         # exclude = ['user_type',]
         depth = 3
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    """商品 序列化类
+    """Product 序列化类
     """
+    category=serializers.PrimaryKeyRelatedField(
+        many=False, read_only=False, queryset=models.Category.objects.all(), help_text='int,类别')  
+    
     class Meta:
         model = models.Product
         fields = '__all__'
         # exclude = ['user_type',]
         depth = 3
+    def validate(self, data):
+        print('data',data)
+        # if data['start'] > data['finish']:
+        #     raise serializers.ValidationError("finish must occur after start")
+        return data

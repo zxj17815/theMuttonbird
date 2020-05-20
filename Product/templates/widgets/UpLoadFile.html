@@ -1,0 +1,15 @@
+<!--自定义的admin管理后台上传文件组件，可通过js预览
+-->
+<p class="file-upload">
+    {% if widget.is_initial %}
+        {{ widget.initial_text }}: <a href="{{ widget.value.url }}">{{ widget.value }}</a>
+        {% if not widget.required %}
+            <span class="clearable-file-input">
+            <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
+            <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+            </span>
+        {% endif %}<br>
+    {% endif %}
+    <img id="{{ widget.name }}-image" src="{{ widget.value.url }}" width="200px" /><br>
+    {{ widget.input_text }}:<input type="{{ widget.type }}" onchange="change_image({{ widget.name }})" id="{{ widget.name }}-input" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+</p>
