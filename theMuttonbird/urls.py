@@ -40,8 +40,10 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('docs/', include_docs_urls(title='FS API文档')),
-    path('base/', include('Base.urls')),
+    # path('base/', include('Base.urls')),
     path('goods/', include('Product.urls')),
+    path('order/', include('OrderManageMent.urls')),
+
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',
             schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger',

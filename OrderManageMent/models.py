@@ -9,6 +9,7 @@
 import os
 import random
 import string
+import uuid
 from django.db import models
 
 def user_directory_path(instance, filename):
@@ -20,6 +21,9 @@ def user_directory_path(instance, filename):
 
 # Create your models here.
 class Order(models.Model):
+    """订单"""
+    id = models.UUIDField('Id',primary_key=True, auto_created=True, default=uuid.uuid4,
+                            editable=False, help_text="string(150),唯一编码")
     out_trade_no=models.CharField("OutTradeNo", max_length=50,help_text='string，外部支付单号（如微信平台商户订单号）')
     platform=models.IntegerField("Platform",choices=((0,'微信小程序'),(1,'WEB')),default=0)
     user=models.ForeignKey("Base.User", verbose_name="User", related_name="order", on_delete=models.CASCADE)
@@ -35,8 +39,11 @@ class Order(models.Model):
         verbose_name_plural = "Orders"
 
 class OrderPackage(models.Model):
+    """订单商品"""
+    id = models.UUIDField('Id',primary_key=True, auto_created=True, default=uuid.uuid4,
+                            editable=False, help_text="string(150),唯一编码")
     order=models.ForeignKey("Order", verbose_name="Order", related_name="order_package", on_delete=models.CASCADE)
-    procuct_sku=models.ForeignKey("Product.ProductSpec", verbose_name="ProductSKU", related_name="order_package", on_delete=models.CASCADE)
+    procuct_sku=models.ForeignKey("Product.ProductSku", verbose_name="ProductSKU", related_name="order_package", on_delete=models.CASCADE)
     quantity=models.IntegerField("Quantity",help_text="数量")
     class Meta:
         verbose_name = "OrderPackge"
@@ -45,6 +52,8 @@ class OrderPackage(models.Model):
 class Refund(models.Model):
     """退货单
     """
+    id = models.UUIDField('Id',primary_key=True, auto_created=True, default=uuid.uuid4,
+                            editable=False, help_text="string(150),唯一编码")
     order=models.ForeignKey("Order", verbose_name="Order",related_name="refund", on_delete=models.CASCADE)
     out_refund_no=models.CharField("OutRefundNo", max_length=50,help_text='string，退款单号',null=True, blank=True)
     extra=models.TextField("Extra",help_text='退货理由')
@@ -61,6 +70,9 @@ class Refund(models.Model):
         verbose_name_plural = "Refunds"
 
 class RefundPackage(models.Model):
+    """退货商品"""
+    id = models.UUIDField('Id',primary_key=True, auto_created=True, default=uuid.uuid4,
+                            editable=False, help_text="string(150),唯一编码")
     refund=models.ForeignKey("Refund", verbose_name="Refund", related_name="refund_package", on_delete=models.CASCADE)
     order_package=models.ForeignKey("OrderPackage", verbose_name="OrderPackage", related_name="refund_package", on_delete=models.CASCADE)
     quantity=models.IntegerField("Quantity",help_text="数量")

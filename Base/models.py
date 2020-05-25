@@ -8,9 +8,12 @@
 '''
 from django.contrib.auth.models import AbstractUser,BaseUserManager
 from django.db import models
+import uuid
 
 # Create your models here.
 class User(AbstractUser):
+    id = models.UUIDField('Id',primary_key=True, auto_created=True, default=uuid.uuid4,
+                            editable=False, help_text="string(150),唯一ID")
     username = models.CharField(
         'username',
         max_length=150,

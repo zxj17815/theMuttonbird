@@ -3,13 +3,9 @@ from . import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'category', views.CategoryViewSet)
-router.register(r'product', views.ProductViewSet)
-# router.register(r'product_spec', views.ProductSpecViewSet)
-# router.register(r'spec', views.SpecViewSet)
-# router.register(r'spec_info', views.SpecInfoViewSet)
+router.register(r'order', views.OrderViewSet)
 
-app_name = 'Product'
+app_name = 'OrderManageMent'
 
 urlpatterns = [
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

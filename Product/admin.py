@@ -9,7 +9,7 @@
 
 from django.contrib import admin
 from django.db import models
-from .models import Product,Category,Spec,SpecInfo,ProductSpec
+from .models import Product,Category,SkuKey,SkuValue,ProductSku,Spec,SpecContent
 from django.utils.safestring import mark_safe
 from . import widgets
 # Register your models here.
@@ -17,10 +17,15 @@ from . import widgets
 admin.site.site_title = "theMuttonBird"
 admin.site.site_header = "theMuttonBird"
 
-class ProductSpecInline(admin.TabularInline):
-    model = ProductSpec
+class ProductSkuInline(admin.TabularInline):
+    model = ProductSku
     extra=1
-    fields = ['speninfo']    #只显示NameTwo这个字段
+    fields = ['sku_value','quantity']    #只显示NameTwo这个字段
+
+class SpecContentInline(admin.TabularInline):
+    model = SpecContent
+    extra=1
+    fields = ['spec','content']    #只显示NameTwo这个字段
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name','get_category','create_time','on_sale','show_main_image') # list
@@ -47,7 +52,7 @@ class ProductAdmin(admin.ModelAdmin):
             qs = qs.order_by(*ordering)
         return qs  
 
-    inlines = [ProductSpecInline] 
+    inlines = [ProductSkuInline,SpecContentInline] 
 
     # def get_form(self, request, obj=None, **args):
     #     defaults = {}
@@ -106,4 +111,4 @@ class ProductAdmin(admin.ModelAdmin):
     #     else:
     #         super().save_model(request, obj, form, change)
 admin.site.register(Product,ProductAdmin)
-admin.site.register([Category,Spec,SpecInfo,ProductSpec])
+admin.site.register([Category,SkuKey,SkuValue,ProductSku,Spec,SpecContent])
