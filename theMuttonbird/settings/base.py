@@ -95,7 +95,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'theMuttonbird.wsgi.application'
+# WSGI_APPLICATION = 'theMuttonbird.wsgi.application'
 
 
 # Database

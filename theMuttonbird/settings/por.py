@@ -11,6 +11,8 @@
 from .base import *
 DEBUG = False
 
+WSGI_APPLICATION = 'theMuttonbird.wsgi_por.application'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

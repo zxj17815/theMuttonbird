@@ -4,6 +4,7 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'order', views.OrderViewSet)
+router.register(r'refund', views.RefundViewSet)
 
 app_name = 'OrderManageMent'
 

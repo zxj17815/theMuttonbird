@@ -26,15 +26,24 @@ from rest_framework.pagination import PageNumberPagination  # 分页器
 from . import models
 from django.db.models import Q, F
 from . import serializers
+from drf_yasg.utils import swagger_auto_schema
 
 # Create your views here.
 
-class OrderViewSet(viewsets.ModelViewSet):
-    '''
-    list:
-        获取订单列表 
-    '''
+
+class OrderViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin):
     # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
-    filterset_fields = '__all__' 
+    filterset_fields = '__all__'
+
+    @swagger_auto_schema(operation_summary="新增订单", request_body=serializers.OrderSerializer, operation_description="下单后,根据返回的订单信息请求支付接口")
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+
+class RefundViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin):
+    # permission_classes = [permissions.DjangoModelPermissions]
+    queryset = models.Refund.objects.all()
+    serializer_class = serializers.RefundSerializer
+    filterset_fields = ['id', 'order']
