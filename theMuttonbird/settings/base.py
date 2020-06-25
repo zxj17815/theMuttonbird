@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
+"""
 @File        :settings.py
 @Description :
 @DateTiem    :2020-05-01 14:58:38
 @Author      :Jay Zhang
-'''
-
+"""
 
 """
 Django settings for theMuttonbird project.
@@ -20,15 +19,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from datetime import timedelta
 
-
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.abspath(os.path.join(__file__, os.pardir))))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -40,7 +36,6 @@ SECRET_KEY = 'm6@g37plu+5$oshv%ge99tr88u)k5ocz-tks^&)1kp^&nfp$-$'
 # DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -95,26 +90,6 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'theMuttonbird.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'theMuttonbird',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#         'CHARSET': 'utf8',
-#         'ATOMIC_REQUESTS': True
-#     },
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -133,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -146,16 +120,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
 
 # restfulAPI配置
 REST_FRAMEWORK = {
@@ -199,13 +163,13 @@ SIMPLE_JWT = {
 }
 
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH':False,
+    'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
-      'JWT Token': {
+        'JWT Token': {
             'type': 'apiKey',
-            'description':'jwt令牌认证方式',
+            'description': 'jwt令牌认证方式',
             'name': 'Authorization + Bearer [access]',
             'in': 'header'
-      }
+        }
     }
 }
