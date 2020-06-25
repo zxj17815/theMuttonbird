@@ -5,3 +5,5 @@ upload/*
 PayMent/access_key/*
 !PayMent/access_key/__init__.py
 !PayMent/access_key/*.md
+venv
+.idea

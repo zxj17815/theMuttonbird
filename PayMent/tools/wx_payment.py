@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
+"""
 @File        :wx_payment.py
 @Description :封装微信付款、退款的序列化和xm转换
 @DateTiem    :2020-06-03 21:24:56
 @Author      :Jay Zhang
-'''
+"""
 
 import datetime
 import hashlib
@@ -21,14 +21,15 @@ from .. import access_key
 
 class PayMent:
     '''微信付款'''
+
     # 商户平台上设置、查询
     def __init__(self):
-        self.MCH_ID= access_key.MCH['MCH_ID']# 商户Id
-        self.CLIENT_APP_ID=access_key.MINIPROGRAM['APP_ID'] # 微信小程序APPId
-        self.MCH_KEY=access_key.MCH['MCH_KEY'] # 支付交易秘钥
+        self.MCH_ID = access_key.MCH['MCH_ID']  # 商户Id
+        self.CLIENT_APP_ID = access_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
+        self.MCH_KEY = access_key.MCH['MCH_KEY']  # 支付交易秘钥
 
     # 生成签名的函数
-    def paysign(self,appid, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee):
+    def paysign(self, appid, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee):
         ret = {
             "appid": appid,
             "body": body,
@@ -48,7 +49,6 @@ class PayMent:
         sign = hashlib.md5(stringSignTemp.encode("utf-8")).hexdigest()
         return sign.upper()
 
-
     # 生成随机字符串
     def getNonceStr(self):
         """生成随机字符串
@@ -57,7 +57,6 @@ class PayMent:
         nonce_str = ''.join(random.sample(data, 30))
         return nonce_str
 
-
     # 生成商品订单号
     def getWxPayOrdrID(self):
         date = datetime.datetime.now()
@@ -65,7 +64,6 @@ class PayMent:
         payOrdrID = date.strftime("%Y%m%d%H%M%S%f")
 
         return payOrdrID
-
 
     # 获取全部参数信息，封装成xml
     def get_bodyData(self, openid, client_ip, notify_url, body, price, out_trade_no=None):
@@ -82,12 +80,13 @@ class PayMent:
         # body = 'Mytest'  # 商品描述
         # notify_url = 'https://127.0.0.1:8000/payOrder/'  # 支付成功的回调地址  可访问 不带参数
         nonce_str = self.getNonceStr()  # 随机字符串
-        if not out_trade_no: #商户订单号是否存在，如果存在则是重新支付的
+        if not out_trade_no:  # 商户订单号是否存在，如果存在则是重新支付的
             out_trade_no = self.getWxPayOrdrID()  # 生成商户订单号
         total_fee = str(price)  # 订单价格 单位是 分
 
         # 获取签名
-        sign = self.paysign(self.CLIENT_APP_ID, body, self.MCH_ID, nonce_str, notify_url, openid, out_trade_no, client_ip, total_fee)
+        sign = self.paysign(self.CLIENT_APP_ID, body, self.MCH_ID, nonce_str, notify_url, openid, out_trade_no,
+                            client_ip, total_fee)
 
         bodyData = '<xml>'
         bodyData += '<appid>' + self.CLIENT_APP_ID + '</appid>'  # 小程序ID
@@ -105,8 +104,7 @@ class PayMent:
 
         return bodyData
 
-
-    def xml_to_dict(self,xml_data):
+    def xml_to_dict(self, xml_data):
         '''
         xml to dict
         :param xml_data:
@@ -118,8 +116,7 @@ class PayMent:
             xml_dict[child.tag] = child.text
         return xml_dict
 
-
-    def dict_to_xml(self,dict_data):
+    def dict_to_xml(self, dict_data):
         '''
         dict to xml
         :param dict_data:
@@ -131,9 +128,8 @@ class PayMent:
         xml.append("</xml>")
         return "".join(xml)
 
-
     # 获取返回给小程序的paySign
-    def get_paysign(self,prepay_id, timeStamp, nonceStr):
+    def get_paysign(self, prepay_id, timeStamp, nonceStr):
         pay_data = {
             'appId': self.CLIENT_APP_ID,
             'nonceStr': nonceStr,
@@ -150,14 +146,15 @@ class PayMent:
 class RefundMent:
     """微信退款
     """
+
     # 商户平台上设置、查询
     def __init__(self):
-        self.MCH_ID= access_key.MCH['MCH_ID']# 商户Id
-        self.CLIENT_APP_ID=access_key.MINIPROGRAM['APP_ID'] # 微信小程序APPId
-        self.MCH_KEY=access_key.MCH['MCH_KEY'] # 支付交易秘钥
+        self.MCH_ID = access_key.MCH['MCH_ID']  # 商户Id
+        self.CLIENT_APP_ID = access_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
+        self.MCH_KEY = access_key.MCH['MCH_KEY']  # 支付交易秘钥
 
     # 生成签名的函数
-    def paysign(self,appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee):
+    def paysign(self, appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee):
         ret = {
             "appid": appid,
             "mch_id": mch_id,
@@ -174,7 +171,6 @@ class RefundMent:
         sign = hashlib.md5(stringSignTemp.encode("utf-8")).hexdigest()
         return sign.upper()
 
-
     # 生成随机字符串
     def getNonceStr(self):
         """生成随机字符串
@@ -183,15 +179,13 @@ class RefundMent:
         nonce_str = ''.join(random.sample(data, 30))
         return nonce_str
 
-
     # 生成退款单号
     def getWxRefundOrdrID(self):
         date = datetime.datetime.now()
         # 根据当前系统时间来生成商品订单号。时间精确到微秒，最前面加上T
-        payOrdrID ="T" + date.strftime("%Y%m%d%H%M%S%f")
+        payOrdrID = "T" + date.strftime("%Y%m%d%H%M%S%f")
 
         return payOrdrID
-
 
     # 获取全部参数信息，封装成xml
     def get_bodyData(self, out_trade_no, refund_fee, total_fee):
@@ -209,7 +203,8 @@ class RefundMent:
         total_fee = str(total_fee)  # 订单价格 单位是 分
 
         # 获取签名
-        sign = self.paysign(self.CLIENT_APP_ID, self.MCH_ID, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee)
+        sign = self.paysign(self.CLIENT_APP_ID, self.MCH_ID, nonce_str, out_refund_no, out_trade_no, refund_fee,
+                            total_fee)
 
         bodyData = '<xml>'
         bodyData += '<appid>' + self.CLIENT_APP_ID + '</appid>'  # 小程序ID
@@ -225,8 +220,7 @@ class RefundMent:
 
         return bodyData
 
-
-    def xml_to_dict(self,xml_data):
+    def xml_to_dict(self, xml_data):
         '''
         xml to dict
         :param xml_data:
@@ -238,8 +232,7 @@ class RefundMent:
             xml_dict[child.tag] = child.text
         return xml_dict
 
-
-    def dict_to_xml(self,dict_data):
+    def dict_to_xml(self, dict_data):
         '''
         dict to xml
         :param dict_data:
