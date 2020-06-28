@@ -22,7 +22,8 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'CHARSET': 'utf8',
-        'ATOMIC_REQUESTS': True
+        'ATOMIC_REQUESTS': True,
+        'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
 

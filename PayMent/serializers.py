@@ -4,20 +4,28 @@
 @DateTiem    :2020-05-01 12:02:50
 @Author      :Jay Zhang
 """
+import time
 
-import json
-from abc import ABC
-
-from django.conf import settings
-from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
-from . import models
+
 from OrderManageMent import models as OrderManageMent_models
-from Product import models as Product_models
 
 
-class WeChatPaySerializer(serializers.Serializer, ABC):
-    """微信支付数据"""
-    order = serializers.PrimaryKeyRelatedField(read_only=False, queryset=OrderManageMent_models.Order.objects.all(),
+class WeChatPaySerializer(serializers.Serializer):
+    """微信支付订单数据"""
+    order = serializers.PrimaryKeyRelatedField(write_only=True, queryset=OrderManageMent_models.Order.objects.all(),
                                                help_text="Order的ID")
-    # TODO 需要先在客户管理模块里添加微信用户模型，根据绑定的Base用户获取到微信用户obj到openid用于微信支付
+
+    def validate_order(self, order):
+        if not self.context['request'].user == order.user:
+            raise serializers.ValidationError('This order does not belong to this user')
+        return order
+
+
+class WeChatPayReturnSerializer(serializers.Serializer):
+    """微信支付返回数据"""
+    timeStamp = serializers.CharField(read_only=True, help_text='时间戳', default=str(int(time.time())))
+    nonceStr = serializers.CharField(read_only=True, help_text='nonce_str')
+    package = serializers.CharField(read_only=True, help_text='prepay_id=prepay_id')
+    signType = serializers.CharField(read_only=True, help_text='MD5')
+    paySign = serializers.CharField(read_only=True, help_text='paySign')

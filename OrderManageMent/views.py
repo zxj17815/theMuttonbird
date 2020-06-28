@@ -34,6 +34,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 class OrderViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                    mixins.UpdateModelMixin):
+    permission_classes = [permissions.IsAuthenticated]
     # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
@@ -47,6 +48,7 @@ class OrderViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Retrie
 
 class RefundViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                     mixins.UpdateModelMixin):
+    permission_classes = [permissions.IsAuthenticated]
     # permission_classes = [permissions.DjangoModelPermissions]
     queryset = models.Refund.objects.all()
     serializer_class = serializers.RefundSerializer

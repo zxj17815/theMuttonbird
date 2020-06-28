@@ -19,19 +19,19 @@ from Product import models as Product_models
 class OrderPackageSerializer(serializers.ModelSerializer):
     """订单产品 序列化类
     """
-    procuct_sku = serializers.PrimaryKeyRelatedField(read_only=False, queryset=Product_models.ProductSku.objects.all())
+    product_sku = serializers.PrimaryKeyRelatedField(read_only=False, queryset=Product_models.ProductSku.objects.all())
 
     class Meta:
         model = models.OrderPackage
         fields = '__all__'
-        extra_kwargs = {'procuct_sku': {'required': True}}
+        extra_kwargs = {'product_sku': {'required': True}}
         depth = 1
 
     def validate(self, attrs):
         # 检查是否超过库存
-        if attrs['procuct_sku'].quantity - attrs['quantity'] < 0:
+        if attrs['product_sku'].quantity - attrs['quantity'] < 0:
             raise serializers.ValidationError(
-                {'procuct_sku': '{},The stock quantity is not enough'.format(attrs['procuct_sku'].id)})
+                {'product_sku': '{},The stock quantity is not enough'.format(attrs['product_sku'].id)})
         return super().validate(attrs)
 
 

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'Base',
     'Product',
     'OrderManageMent',
+    'CustomerManageMent',
     'rest_framework',
     'django_filters',
     'drf_yasg',
@@ -162,13 +163,23 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=7),
 }
 
+# SWAGGER_SETTINGS = {
+#     'USE_SESSION_AUTH': False,
+#     'SECURITY_DEFINITIONS': {
+#         'JWT Token': {
+#             'type': 'apiKey',
+#             'description': 'jwt令牌认证方式',
+#             'name': 'Authorization + Bearer [access]',
+#             'in': 'header'
+#         }
+#     }
+# }
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
+    'LOGIN_URL': '/admin/login/',
     'SECURITY_DEFINITIONS': {
-        'JWT Token': {
+        'Bearer': {
             'type': 'apiKey',
-            'description': 'jwt令牌认证方式',
-            'name': 'Authorization + Bearer [access]',
+            'name': 'Authorization',
             'in': 'header'
         }
     }

@@ -9,34 +9,39 @@
 
 from django.contrib import admin
 from django.db import models
-from .models import Product,Category,SkuKey,SkuValue,ProductSku,Spec,SpecContent
+from .models import Product, Category, SkuKey, SkuValue, ProductSku, Spec, SpecContent
 from django.utils.safestring import mark_safe
 from . import widgets
+
 # Register your models here.
 
 admin.site.site_title = "theMuttonBird"
 admin.site.site_header = "theMuttonBird"
 
+
 class ProductSkuInline(admin.TabularInline):
     model = ProductSku
-    extra=1
-    fields = ['sku_value','quantity']    #只显示NameTwo这个字段
+    extra = 1
+    fields = ['sku_value', 'quantity']  # 只显示NameTwo这个字段
+
 
 class SpecContentInline(admin.TabularInline):
     model = SpecContent
-    extra=1
-    fields = ['spec','content']    #只显示NameTwo这个字段
+    extra = 1
+    fields = ['spec', 'content']  # 只显示NameTwo这个字段
+
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name','get_category','create_time','on_sale','show_main_image') # list
-    search_fields = ('category','name')
+    list_display = ('name', 'get_category', 'create_time', 'on_sale', 'show_main_image')  # list
+    search_fields = ('category', 'name')
     list_per_page = 20
-    model=Product
-    
+    model = Product
+
     def get_category(self, obj):
-        print('obj',obj)
+        print('obj', obj)
         return obj.category.name
-    get_category.short_description = '类别'  
+
+    get_category.short_description = '类别'
 
     def show_main_image(self, obj):
         try:
@@ -50,9 +55,9 @@ class ProductAdmin(admin.ModelAdmin):
         ordering = self.get_ordering(request)
         if ordering:
             qs = qs.order_by(*ordering)
-        return qs  
+        return qs
 
-    inlines = [ProductSkuInline,SpecContentInline] 
+    inlines = [ProductSkuInline, SpecContentInline]
 
     # def get_form(self, request, obj=None, **args):
     #     defaults = {}
@@ -70,7 +75,7 @@ class ProductAdmin(admin.ModelAdmin):
     }
 
     def change_view(self, request, object_id, extra_context=None):
-        print('self.fields',self.fields)
+        print('self.fields', self.fields)
         # self.fields.add('show_main_image')  # 将自定义的字段注册到编辑页中
         # self.readonly_fields = ("show_main_image",)  # 务必将该字段设置为仅限可读, 否则抛出异常
         return super(ProductAdmin, self).change_view(request, object_id, extra_context=extra_context)
@@ -79,24 +84,24 @@ class ProductAdmin(admin.ModelAdmin):
     #     # 重写保存方法
     #     # if form.is_valid():
     #     #     album = form.save()
- 
+
     #     #     if form.cleaned_data['zip'] is not None:
     #     #         zip = zipfile.ZipFile(form.cleaned_data['zip'])
     #     #         for filename in sorted(zip.namelist()):
- 
+
     #     #             file_name = os.path.basename(filename)
     #     #             if not file_name:
     #     #                 continue
- 
+
     #     #             data = zip.read(filename)
     #     #             contentfile = ContentFile(data)
- 
+
     #     #             img = AlbumImage()
     #     #             img.album = album
     #     #             filename = '{0}{1}.jpg'.format(album.slug[:8], str(uuid.uuid4())[-13:])
     #     #             img.alt = filename
     #     #             img.image.save(filename, contentfile)
- 
+
     #     #             img.thumb.save('thumb-{0}'.format(filename), contentfile)
     #     #             img.save()
     #     #         zip.close()
@@ -110,5 +115,7 @@ class ProductAdmin(admin.ModelAdmin):
     #             obj.save()
     #     else:
     #         super().save_model(request, obj, form, change)
-admin.site.register(Product,ProductAdmin)
-admin.site.register([Category,SkuKey,SkuValue,ProductSku,Spec,SpecContent])
+
+
+admin.site.register(Product, ProductAdmin)
+admin.site.register([Category, SkuKey, SkuValue, ProductSku, Spec, SpecContent])
