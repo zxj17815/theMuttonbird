@@ -16,17 +16,17 @@ from django.conf import settings
 # from pyasn1.type.univ import Null
 
 # 引入第三方平台密钥
-from .. import access_key
+from ..access_key import wx_key
 
 
 class PayMent:
-    '''微信付款'''
+    """微信付款"""
 
     # 商户平台上设置、查询
     def __init__(self):
-        self.MCH_ID = access_key.MCH['MCH_ID']  # 商户Id
-        self.CLIENT_APP_ID = access_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
-        self.MCH_KEY = access_key.MCH['MCH_KEY']  # 支付交易秘钥
+        self.MCH_ID = wx_key.MCH['MCH_ID']  # 商户Id
+        self.CLIENT_APP_ID = wx_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
+        self.MCH_KEY = wx_key.MCH['MCH_KEY']  # 支付交易秘钥
 
     # 生成签名的函数
     def paysign(self, appid, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee):
@@ -149,9 +149,9 @@ class RefundMent:
 
     # 商户平台上设置、查询
     def __init__(self):
-        self.MCH_ID = access_key.MCH['MCH_ID']  # 商户Id
-        self.CLIENT_APP_ID = access_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
-        self.MCH_KEY = access_key.MCH['MCH_KEY']  # 支付交易秘钥
+        self.MCH_ID = wx_key.MCH['MCH_ID']  # 商户Id
+        self.CLIENT_APP_ID = wx_key.MINIPROGRAM['APP_ID']  # 微信小程序APPId
+        self.MCH_KEY = wx_key.MCH['MCH_KEY']  # 支付交易秘钥
 
     # 生成签名的函数
     def paysign(self, appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee):
@@ -221,11 +221,11 @@ class RefundMent:
         return bodyData
 
     def xml_to_dict(self, xml_data):
-        '''
+        """
         xml to dict
         :param xml_data:
         :return: dict
-        '''
+        """
         xml_dict = {}
         root = ET.fromstring(xml_data)
         for child in root:
@@ -233,11 +233,11 @@ class RefundMent:
         return xml_dict
 
     def dict_to_xml(self, dict_data):
-        '''
+        """
         dict to xml
         :param dict_data:
         :return: xml
-        '''
+        """
         xml = ["<xml>"]
         for k, v in dict_data.iteritems():
             xml.append("<{0}>{1}</{0}>".format(k, v))

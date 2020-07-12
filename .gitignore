@@ -7,3 +7,7 @@ PayMent/access_key/*
 !PayMent/access_key/*.md
 venv
 .idea
+/docker-compose.yml
+/CustomerManageMent/access_key/*
+!CustomerManageMent/access_key/__init__.py
+!CustomerManageMent/access_key/*.md

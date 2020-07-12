@@ -19,7 +19,13 @@ class WeChatPaySerializer(serializers.Serializer):
     def validate_order(self, order):
         if not self.context['request'].user == order.user:
             raise serializers.ValidationError('This order does not belong to this user')
+        # 判断是否已经付款
+        if order.state < 1:
+            raise serializers.ValidationError('This order has been paid')
         return order
+
+    def to_representation(self, instance):
+        return instance
 
 
 class WeChatPayReturnSerializer(serializers.Serializer):

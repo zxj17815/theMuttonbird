@@ -43,6 +43,8 @@ class OrderViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Retrie
     @swagger_auto_schema(operation_summary="新增订单", request_body=serializers.OrderSerializer,
                          operation_description="下单后,根据返回的订单信息请求支付接口")
     def create(self, request, *args, **kwargs):
+        if not ("user" in request.data and request.data["user"] != ""):
+            request.data["user"] = self.request.user.id
         return super().create(request, *args, **kwargs)
 
 
@@ -53,3 +55,5 @@ class RefundViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Retri
     queryset = models.Refund.objects.all()
     serializer_class = serializers.RefundSerializer
     filterset_fields = ['id', 'order']
+
+    # TODO: 退款接口区分已发货和未发货两种情况不同的操作

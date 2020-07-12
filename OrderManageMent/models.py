@@ -26,7 +26,8 @@ class Order(models.Model):
     """订单"""
     id = models.UUIDField('Id', primary_key=True, auto_created=True, default=uuid.uuid4,
                           editable=False, help_text="唯一编码")
-    out_trade_no = models.CharField("OutTradeNo", max_length=50, null=True, blank=True, help_text='外部支付单号（如微信平台商户订单号）')
+    out_trade_no = models.CharField("OutTradeNo", max_length=50, default="", null=True, blank=True,
+                                    help_text='外部支付单号（如微信平台商户订单号）')
     platform = models.IntegerField("Platform", choices=((0, '微信小程序'), (1, 'WEB')), default=0)
     user = models.ForeignKey("Base.User", verbose_name="User", related_name="order", on_delete=models.CASCADE)
     address = models.TextField("Address", help_text='收货信息')

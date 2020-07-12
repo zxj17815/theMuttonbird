@@ -18,14 +18,16 @@ from . import models
 from django.db.models import Q, F
 from . import serializers
 
+
 class P20(PageNumberPagination):
-    #每页显示的数据条数
-    page_size =20 #每页显示的多少
+    # 每页显示的数据条数
+    page_size = 20  # 每页显示的多少
+
 
 # Create your views here.
 
 
-class UserViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.UpdateModelMixin):
+class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
     """
     基本用户表
     """
@@ -44,6 +46,7 @@ class UserViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.RetrieveM
     #         return serializers.BatchPass
     #     return serializers.Z98CgjySerializer
 
+
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -52,6 +55,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = serializers.GroupSerializer
 
+
 class PermissionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows permission to be viewed or edited.
@@ -59,4 +63,4 @@ class PermissionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = Permission.objects.all()
     serializer_class = serializers.PermissionSerializer
-    filterset_fields = '__all__' 
+    filterset_fields = '__all__'
