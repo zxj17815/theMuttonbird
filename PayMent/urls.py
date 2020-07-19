@@ -3,7 +3,8 @@ from . import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'wechat_pay', views.WeChatPay)
+router.register(r'we_chat_pay', views.WeChatPay)
+router.register(r'we_chat_pay_call_back', views.WeChatPayCallBack)
 
 app_name = 'PayMent'
 

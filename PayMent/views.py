@@ -1,8 +1,11 @@
+import datetime
 import time
 import requests
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, views, viewsets, mixins, permissions, status  # RestFul API视图
 from rest_framework.response import Response  # 返回
+from rest_framework_xml.parsers import XMLParser  # xml获取
+from rest_framework_xml.renderers import XMLRenderer  # xml获取
 from OrderManageMent import models as OrderManageMent_models
 from . import serializers
 # 内部方法
@@ -62,4 +65,32 @@ class WeChatPay(viewsets.GenericViewSet, mixins.CreateModelMixin):
             head = {"charset=UTF-8"}
             return Response(res, status=status.HTTP_400_BAD_REQUEST)
 
-# TODO: 申请一个地址测试付款，添加付款回调接口改变订单状态
+
+class WeChatPayCallBack(viewsets.GenericViewSet, mixins.CreateModelMixin):
+    # TODO: 申请一个地址测试付款，添加付款回调接口改变订单状态
+    """后台-支付成功回调"""
+    renderer_classes = [XMLRenderer]
+    parser_classes = [XMLParser]
+
+    def create(self, request, *args, **kwargs):
+        log = open('pay_call_back.log', 'r+')
+        log.read()
+        _xml = request.body
+        # 拿到微信发送的xml请求 即微信支付后的回调内容
+        xml = str(_xml, encoding="utf-8")
+        xml = PayMent().xml_to_dict(xml)
+        serializer = serializers.PayCallBack(xml)
+        data = serializer.data
+        log.write('\n' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S WeChatPayCallBack:\n') + str(data))
+        log.close()
+        if data['return_code'] == 'SUCCESS' and data['result_code'] == 'SUCCESS':
+            out_trade_no = data['out_trade_no']  # 商户订单号
+            order = OrderManageMent_models.Oreder.objects.get(out_trade_no=out_trade_no)
+            if order:
+                order.state = 1
+                order.save()
+        res = {
+            "return_code": "SUCCESS",
+            "return_msg": "OK"
+        }
+        return Response(res)
